@@ -16,7 +16,6 @@ async function getUsers(req, res) {
 async function getUser(req, res, id) {
     try {
         const user = await User.findById(id)
-
         if(!user) {
             res.writeHead(404, { 'Content-Type': 'application/json' })
             res.end(JSON.stringify({ message: 'Product Not Found' }))

@@ -1,5 +1,4 @@
 let users = require('../data/users')
-const { v4: uuidv4 } = require('uuid')
 
 const { writeDataToFile } = require('../utils')
 
@@ -18,7 +17,14 @@ function findById(id) {
 
 function create(user) {
     return new Promise((resolve, reject) => {
-        const newUser = {id: uuidv4(), ...user}
+        const lastUser = users[users.length - 1];
+        let userId;
+        if (lastUser) {
+            userId = lastUser.id + 1;
+        } else {
+            userId = 1;
+        }
+        const newUser = {id: userId, ...user}
         users.push(newUser)
         if (process.env.NODE_ENV !== 'test') {
             writeDataToFile('./data/users.json', users);
@@ -27,12 +33,12 @@ function create(user) {
     })
 }
 
-function update(id, product) {
+function update(id, user) {
     return new Promise((resolve, reject) => {
         const index = users.findIndex((p) => p.id === id)
-        users[index] = {id, ...product}
+        users[index] = {id, ...user}
         if (process.env.NODE_ENV !== 'test') {
-            writeDataToFile('./data/products.json', users);
+            writeDataToFile('./data/users.json', users);
         }
         resolve(users[index])
     })
