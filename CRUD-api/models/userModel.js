@@ -1,48 +1,48 @@
-let products = require('../data/products')
+let users = require('../data/users')
 const { v4: uuidv4 } = require('uuid')
 
 const { writeDataToFile } = require('../utils')
 
 function findAll() {
     return new Promise((resolve, reject) => {
-        resolve(products)
+        resolve(users)
     })
 }
 
 function findById(id) {
     return new Promise((resolve, reject) => {
-        const product = products.find((p) => p.id === id)
-        resolve(product)
+        const user = users.find((p) => p.id === id)
+        resolve(user)
     })
 }
 
-function create(product) {
+function create(user) {
     return new Promise((resolve, reject) => {
-        const newProduct = {id: uuidv4(), ...product}
-        products.push(newProduct)
+        const newUser = {id: uuidv4(), ...user}
+        users.push(newUser)
         if (process.env.NODE_ENV !== 'test') {
-            writeDataToFile('./data/products.json', products);
+            writeDataToFile('./data/users.json', users);
         }
-        resolve(newProduct)
+        resolve(newUser)
     })
 }
 
 function update(id, product) {
     return new Promise((resolve, reject) => {
-        const index = products.findIndex((p) => p.id === id)
-        products[index] = {id, ...product}
+        const index = users.findIndex((p) => p.id === id)
+        users[index] = {id, ...product}
         if (process.env.NODE_ENV !== 'test') {
-            writeDataToFile('./data/products.json', products);
+            writeDataToFile('./data/products.json', users);
         }
-        resolve(products[index])
+        resolve(users[index])
     })
 }
 
 function remove(id) {
     return new Promise((resolve, reject) => {
-        products = products.filter((p) => p.id !== id)
+        users = users.filter((p) => p.id !== id)
         if (process.env.NODE_ENV !== 'test') {
-            writeDataToFile('./data/products.json', products);
+            writeDataToFile('./data/users.json', users);
         }
         resolve()
     })

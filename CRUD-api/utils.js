@@ -8,7 +8,7 @@ function writeDataToFile(filename, content) {
     })
 }
 
-function getPostData(req) {
+function getUserData(req) {
     return new Promise((resolve, reject) => {
         try {
             let body = ''
@@ -28,5 +28,5 @@ function getPostData(req) {
 
 module.exports = {
     writeDataToFile,
-    getPostData
+    getUserData
 }
