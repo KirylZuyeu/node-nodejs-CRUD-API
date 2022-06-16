@@ -4,7 +4,10 @@
   "description": "nodeJS CRUD API",
   "main": "index.js",
   "scripts": {
-    "start": "nodemon index.js"
+    "start": "nodemon index.js",
+    "start:dev": "nodemon index.js",
+    "start:prod:": "nodemon index.js",
+    "start:multi": "nodemon index.js"
   },
   "keywords": [
     "nodeJS"
@@ -13,9 +16,14 @@
   "license": "ISC",
   "dependencies": {
     "cross-env": "^7.0.3",
-    "dotenv": "^16.0.1"
+    "dotenv": "^16.0.1",
+    "uuid": "^8.3.2"
   },
   "devDependencies": {
-    "nodemon": "^2.0.16"
+    "@types/cors": "^2.8.12",
+    "@types/dotenv": "^8.2.0",
+    "@types/node": "^18.0.0",
+    "nodemon": "^2.0.16",
+    "typescript": "^4.7.3"
   }
 }

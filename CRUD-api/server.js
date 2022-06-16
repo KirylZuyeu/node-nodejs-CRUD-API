@@ -1,16 +1,13 @@
 const http = require('http')
 const { getProducts, getProduct, createProduct, updateProduct, deleteProduct } = require('./controllers/productController')
 
-const dotenv = require('dotenv');
-dotenv.config();
-
 const server = http.createServer((req, res) => {
-    if(req.url === '/api/users' && req.method === 'GET') {
+    if(req.url === '/api/products' && req.method === 'GET') {
         getProducts(req, res)
     } else if(req.url.match(/\/api\/products\/\w+/) && req.method === 'GET') {
         const id = req.url.split('/')[3]
         getProduct(req, res, id)
-    } else if(req.url === '/api/users' && req.method === 'POST') {
+    } else if(req.url === '/api/products' && req.method === 'POST') {
         createProduct(req, res)
     } else if(req.url.match(/\/api\/products\/\w+/) && req.method === 'PUT') {
         const id = req.url.split('/')[3]
@@ -24,9 +21,8 @@ const server = http.createServer((req, res) => {
     }
 })
 
-const PORT = process.env.PORT || 5000;
+const PORT =  process.env.PORT || 5000
 
 server.listen(PORT, () => console.log(`Server running on port ${PORT}`))
 
 module.exports = server;
-
