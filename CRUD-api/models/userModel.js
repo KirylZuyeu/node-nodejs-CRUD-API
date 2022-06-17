@@ -1,6 +1,7 @@
 let users = require('../data/users')
+const { v4: uuidv4 } = require('uuid')
 
-const { writeDataToFile } = require('../utils')
+const { writeDataToFile } = require('../utils/utils')
 
 function findAll() {
     return new Promise((resolve, reject) => {
@@ -17,14 +18,7 @@ function findById(id) {
 
 function create(user) {
     return new Promise((resolve, reject) => {
-        const lastUser = users[users.length - 1];
-        let userId;
-        if (lastUser) {
-            userId = lastUser.id + 1;
-        } else {
-            userId = 1;
-        }
-        const newUser = {id: userId, ...user}
+        const newUser = {id: uuidv4(), ...user}
         users.push(newUser)
         if (process.env.NODE_ENV !== 'test') {
             writeDataToFile('./data/users.json', users);

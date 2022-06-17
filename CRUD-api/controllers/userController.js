@@ -1,6 +1,6 @@
 const User = require('../models/userModel')
 
-const { getUserData } = require('../utils')
+const { getUserData } = require('../utils/utils')
 
 async function getUsers(req, res) {
     try {
@@ -32,19 +32,28 @@ async function createUser(req, res) {
     try {
         const body = await getUserData(req)
 
-        const { name, description, price } = JSON.parse(body)
+        const { username, age, hobbies } = JSON.parse(body)
 
         const user = {
-            name,
-            description,
-            price
+            username,
+            age,
+            hobbies
         }
 
-        const newUser = await User.create(user)
-
-        res.writeHead(201, { 'Content-Type': 'application/json' })
-        return res.end(JSON.stringify(newUser))  
-
+        if (!user.username) {
+            res.writeHead(400, { 'Content-Type': 'application/json' })
+            res.end(JSON.stringify({ message: 'Incorrect value for mandatory username field of new User' }))
+        } else if (!user.age) {
+            res.writeHead(400, { 'Content-Type': 'application/json' })
+            res.end(JSON.stringify({ message: 'Incorrect value for mandatory age field of new User' }))
+        } else if (!user.hobbies) {
+            res.writeHead(400, { 'Content-Type': 'application/json' })
+            res.end(JSON.stringify({ message: 'Incorrect value for mandatory hobbies field of new User' }))
+        } else {
+            const newUser = await User.create(user)
+            res.writeHead(201, { 'Content-Type': 'application/json' })
+            return res.end(JSON.stringify(newUser))  
+        }
     } catch (error) {
         console.log(error)
     }
@@ -60,18 +69,31 @@ async function updateUser(req, res, id) {
         } else {
             const body = await getUserData(req)
 
-            const { name, description, price } = JSON.parse(body)
+            const { username, age, hobbies } = JSON.parse(body)
 
-            const userData = {
-                name: name || user.name,
-                description: description || user.description,
-                price: price || user.price
+            if (!username) {
+                res.writeHead(400, { 'Content-Type': 'application/json' })
+                res.end(JSON.stringify({ message: 'Incorrect value for mandatory username field of new User' }))
+            } else if (!age) {
+                res.writeHead(400, { 'Content-Type': 'application/json' })
+                res.end(JSON.stringify({ message: 'Incorrect value for mandatory age field of new User' }))
+            } else if (!hobbies) {
+                res.writeHead(400, { 'Content-Type': 'application/json' })
+                res.end(JSON.stringify({ message: 'Incorrect value for mandatory hobbies field of new User' }))
+            } else {
+
+                const userData = {
+                    username: username || user.username,
+                    age: age || user.description,
+                    hobbies: hobbies || user.price
+                }
+    
+                const updUser = await User.update(id, userData)
+    
+                res.writeHead(200, { 'Content-Type': 'application/json' })
+                return res.end(JSON.stringify(updUser)) 
             }
 
-            const updUser = await User.update(id, userData)
-
-            res.writeHead(200, { 'Content-Type': 'application/json' })
-            return res.end(JSON.stringify(updUser)) 
         }
  
 
@@ -89,7 +111,7 @@ async function deleteUser(req, res, id) {
             res.end(JSON.stringify({ message: 'Product Not Found' }))
         } else {
             await User.remove(id)
-            res.writeHead(200, { 'Content-Type': 'application/json' })
+            res.writeHead(204, { 'Content-Type': 'application/json' })
             res.end(JSON.stringify({ message: `Product ${id} removed` }))
         }
     } catch (error) {
