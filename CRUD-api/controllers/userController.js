@@ -18,13 +18,14 @@ async function getUser(req, res, id) {
         const user = await User.findById(id)
         if(!user) {
             res.writeHead(404, { 'Content-Type': 'application/json' })
-            res.end(JSON.stringify({ message: 'Product Not Found' }))
+            res.end(JSON.stringify({ message: 'User Not Found' }))
         } else {
             res.writeHead(200, { 'Content-Type': 'application/json' })
             res.end(JSON.stringify(user))
         }
     } catch (error) {
-        console.log(error)
+        res.writeHead(500, { 'Content-Type': 'application/json' })
+        res.end(JSON.stringify({ message: 'Internal server error 500' }))
     }
 }
 
@@ -42,20 +43,21 @@ async function createUser(req, res) {
 
         if (!user.username) {
             res.writeHead(400, { 'Content-Type': 'application/json' })
-            res.end(JSON.stringify({ message: 'Incorrect value for mandatory username field of new User' }))
+            res.end(JSON.stringify({ message: 'Incorrect value of mandatory username field for new User' }))
         } else if (!user.age) {
             res.writeHead(400, { 'Content-Type': 'application/json' })
-            res.end(JSON.stringify({ message: 'Incorrect value for mandatory age field of new User' }))
+            res.end(JSON.stringify({ message: 'Incorrect value of mandatory age field of for User' }))
         } else if (!user.hobbies) {
             res.writeHead(400, { 'Content-Type': 'application/json' })
-            res.end(JSON.stringify({ message: 'Incorrect value for mandatory hobbies field of new User' }))
+            res.end(JSON.stringify({ message: 'Incorrect value of mandatory hobbies field for new User' }))
         } else {
             const newUser = await User.create(user)
             res.writeHead(201, { 'Content-Type': 'application/json' })
             return res.end(JSON.stringify(newUser))  
         }
     } catch (error) {
-        console.log(error)
+        res.writeHead(500, { 'Content-Type': 'application/json' })
+        res.end(JSON.stringify({ message: 'Internal server error 500' }))
     }
 }
 
@@ -65,7 +67,7 @@ async function updateUser(req, res, id) {
 
         if(!user) {
             res.writeHead(404, { 'Content-Type': 'application/json' })
-            res.end(JSON.stringify({ message: 'Product Not Found' }))
+            res.end(JSON.stringify({ message: 'User Not Found' }))
         } else {
             const body = await getUserData(req)
 
@@ -73,13 +75,13 @@ async function updateUser(req, res, id) {
 
             if (!username) {
                 res.writeHead(400, { 'Content-Type': 'application/json' })
-                res.end(JSON.stringify({ message: 'Incorrect value for mandatory username field of new User' }))
+                res.end(JSON.stringify({ message: 'Incorrect value of mandatory username field for new User' }))
             } else if (!age) {
                 res.writeHead(400, { 'Content-Type': 'application/json' })
-                res.end(JSON.stringify({ message: 'Incorrect value for mandatory age field of new User' }))
+                res.end(JSON.stringify({ message: 'Incorrect value of mandatory age field for new User' }))
             } else if (!hobbies) {
                 res.writeHead(400, { 'Content-Type': 'application/json' })
-                res.end(JSON.stringify({ message: 'Incorrect value for mandatory hobbies field of new User' }))
+                res.end(JSON.stringify({ message: 'Incorrect value of mandatory hobbies field for new User' }))
             } else {
 
                 const userData = {
@@ -98,7 +100,8 @@ async function updateUser(req, res, id) {
  
 
     } catch (error) {
-        console.log(error)
+        res.writeHead(500, { 'Content-Type': 'application/json' })
+        res.end(JSON.stringify({ message: 'Internal server error 500' }))
     }
 }
 
@@ -108,14 +111,15 @@ async function deleteUser(req, res, id) {
 
         if(!user) {
             res.writeHead(404, { 'Content-Type': 'application/json' })
-            res.end(JSON.stringify({ message: 'Product Not Found' }))
+            res.end(JSON.stringify({ message: 'User Not Found' }))
         } else {
             await User.remove(id)
             res.writeHead(204, { 'Content-Type': 'application/json' })
-            res.end(JSON.stringify({ message: `Product ${id} removed` }))
+            res.end(JSON.stringify({ message: `User ${id} removed` }))
         }
     } catch (error) {
-        console.log(error)
+        res.writeHead(500, { 'Content-Type': 'application/json' })
+        res.end(JSON.stringify({ message: 'Internal server error 500' }))
     }
 }
 

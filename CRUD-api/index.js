@@ -6,8 +6,10 @@ const dotenv = require('dotenv');
 dotenv.config();
 
 const server = http.createServer((req, res) => {
-
-    if(req.url === '/api/users' && req.method === 'GET') {
+    if (req.url === '/') {
+        res.writeHead(500, { 'Content-Type': 'application/json' })
+        res.end(JSON.stringify({ message: 'Internal server error 500' }))
+    } else if (req.url === '/api/users' && req.method === 'GET') {
         getUsers(req, res)
     } else if(req.url.match(/\/api\/users\/\w+/) && req.method === 'GET') {
         const id = req.url.split('/')[3];
