@@ -1,6 +1,7 @@
 import User from '../models/userModel';
 import { getUserData } from '../utils/utils';
 import { IncomingMessage, ServerResponse } from 'http';
+import { User as UserIntarface, UserInfo } from "../schems/types";
 
 const getUsers = async function(_req:IncomingMessage, res:ServerResponse) {
     try {
@@ -41,15 +42,15 @@ const createUser = async function(req:IncomingMessage, res:ServerResponse) {
             hobbies
         }
 
-        if (!user.username) {
+        if (!username || typeof username !== "string") {
             res.writeHead(400, { 'Content-Type': 'application/json' })
-            res.end(JSON.stringify({ message: 'Incorrect value of mandatory username field for new User' }))
-        } else if (!user.age) {
+            res.end(JSON.stringify({ message: 'Incorrect type of mandatory value username field - it must be a string' }))
+        } else if (!age || typeof age !== "number") {
             res.writeHead(400, { 'Content-Type': 'application/json' })
-            res.end(JSON.stringify({ message: 'Incorrect value of mandatory age field of for User' }))
-        } else if (!user.hobbies) {
+            res.end(JSON.stringify({ message: 'Incorrect type of mandatory value age field - it must be a number' }))
+        } else if (!hobbies || !Array.isArray(hobbies) || !hobbies.every((i:string) => (typeof i === "string"))) {
             res.writeHead(400, { 'Content-Type': 'application/json' })
-            res.end(JSON.stringify({ message: 'Incorrect value of mandatory hobbies field for new User' }))
+            res.end(JSON.stringify({ message: 'Incorrect type of mandatory value hobbies field - it must be array of strings'}))
         } else {
             const newUser = await User.create(user)
             res.writeHead(201, { 'Content-Type': 'application/json' })
@@ -73,15 +74,15 @@ const updateUser = async function(req:IncomingMessage, res:ServerResponse, id:st
 
             const { username, age, hobbies } = JSON.parse(body)
 
-            if (!username) {
+            if (!username || typeof username !== "string") {
                 res.writeHead(400, { 'Content-Type': 'application/json' })
-                res.end(JSON.stringify({ message: 'Incorrect value of mandatory username field for new User' }))
-            } else if (!age) {
+                res.end(JSON.stringify({ message: 'Incorrect type of mandatory value username field - it must be a string' }))
+            } else if (!age || typeof age !== "number") {
                 res.writeHead(400, { 'Content-Type': 'application/json' })
-                res.end(JSON.stringify({ message: 'Incorrect value of mandatory age field for new User' }))
-            } else if (!hobbies) {
+                res.end(JSON.stringify({ message: 'Incorrect type of mandatory value age field - it must be a number' }))
+            } else if (!hobbies || !Array.isArray(hobbies) || !hobbies.every((i:string) => (typeof i === "string"))) {
                 res.writeHead(400, { 'Content-Type': 'application/json' })
-                res.end(JSON.stringify({ message: 'Incorrect value of mandatory hobbies field for new User' }))
+                res.end(JSON.stringify({ message: 'Incorrect type of mandatory value hobbies field - it must be array of strings'}))
             } else {
 
                 const userData = {

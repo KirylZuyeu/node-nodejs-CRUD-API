@@ -4,9 +4,8 @@
   "description": "nodeJS CRUD API",
   "main": "index.ts",
   "scripts": {
-    "start": "nodemon index.js",
-    "dev": "nodemon --exec ts-node index.ts",
-    "build": "rm -rf build/ && prettier --write source/ && tsc",
+    "start:dev": "nodemon --exec ts-node index.ts",
+    "start:prod": "tsc -p tsconfig.json && node build/index.js",
     "start:multi": "nodemon index.js"
   },
   "keywords": [

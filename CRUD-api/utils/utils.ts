@@ -1,10 +1,4 @@
-import fs from 'fs';
 import { IncomingMessage } from 'http';
-import { User } from "../schems/types";
-
-function writeDataToFile(filename:string, content:Array<User>) {
-    fs.writeFileSync(filename, JSON.stringify(content), 'utf8');
-}
 
 function getUserData(req:IncomingMessage):Promise<string> {
     return new Promise((resolve, reject) => {
@@ -24,4 +18,4 @@ function getUserData(req:IncomingMessage):Promise<string> {
     })
 }
 
-export {writeDataToFile, getUserData}
+export { getUserData}
