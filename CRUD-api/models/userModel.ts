@@ -1,7 +1,8 @@
-let users = require('../data/users')
-const { v4: uuidv4 } = require('uuid')
-
-const { writeDataToFile } = require('../utils/utils')
+import fs from 'fs';
+import { v4 as uuidv4 } from 'uuid'
+import { writeDataToFile } from '../utils/utils';
+let users = JSON.parse(fs.readFileSync('./data/users.json').toString());
+import { User, UserInfo } from "../schems/types";
 
 function findAll() {
     return new Promise((resolve, reject) => {
@@ -9,14 +10,14 @@ function findAll() {
     })
 }
 
-function findById(id) {
+function findById(id:string):Promise<User> {
     return new Promise((resolve, reject) => {
-        const user = users.find((p) => p.id === id)
+        const user = users.find((p:User) => p.id === id)
         resolve(user)
     })
 }
 
-function create(user) {
+function create(user:UserInfo) {
     return new Promise((resolve, reject) => {
         const newUser = {id: uuidv4(), ...user}
         users.push(newUser)
@@ -27,9 +28,9 @@ function create(user) {
     })
 }
 
-function update(id, user) {
+function update(id:string, user:UserInfo) {
     return new Promise((resolve, reject) => {
-        const index = users.findIndex((p) => p.id === id)
+        const index = users.findIndex((p:User) => p.id === id)
         users[index] = {id, ...user}
         if (process.env.NODE_ENV !== 'test') {
             writeDataToFile('./data/users.json', users);
@@ -38,9 +39,9 @@ function update(id, user) {
     })
 }
 
-function remove(id) {
+function remove(id:string):Promise<void> {
     return new Promise((resolve, reject) => {
-        users = users.filter((p) => p.id !== id)
+        users = users.filter((p:User) => p.id !== id)
         if (process.env.NODE_ENV !== 'test') {
             writeDataToFile('./data/users.json', users);
         }
@@ -48,10 +49,4 @@ function remove(id) {
     })
 }
 
-module.exports = {
-    findAll,
-    findById,
-    create,
-    update,
-    remove
-}
+export default { findAll, findById, create, update, remove };

@@ -2,11 +2,11 @@
   "name": "crud-api",
   "version": "1.0.0",
   "description": "nodeJS CRUD API",
-  "main": "index.js",
+  "main": "index.ts",
   "scripts": {
     "start": "nodemon index.js",
-    "start:dev": "nodemon index.js",
-    "start:prod:": "nodemon index.js",
+    "dev": "nodemon --exec ts-node index.ts",
+    "build": "rm -rf build/ && prettier --write source/ && tsc",
     "start:multi": "nodemon index.js"
   },
   "keywords": [
@@ -23,7 +23,9 @@
     "@types/cors": "^2.8.12",
     "@types/dotenv": "^8.2.0",
     "@types/node": "^18.0.0",
+    "@types/uuid": "^8.3.4",
     "nodemon": "^2.0.16",
+    "ts-node": "^10.8.1",
     "typescript": "^4.7.3"
   }
 }

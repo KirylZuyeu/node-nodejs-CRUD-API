@@ -1,8 +1,8 @@
-const User = require('../models/userModel')
+import User from '../models/userModel';
+import { getUserData } from '../utils/utils';
+import { IncomingMessage, ServerResponse } from 'http';
 
-const { getUserData } = require('../utils/utils')
-
-async function getUsers(req, res) {
+const getUsers = async function(_req:IncomingMessage, res:ServerResponse) {
     try {
         const users = await User.findAll()
 
@@ -13,7 +13,7 @@ async function getUsers(req, res) {
     }
 }
 
-async function getUser(req, res, id) {
+const getUser = async function(_req:IncomingMessage, res:ServerResponse, id:string) {
     try {
         const user = await User.findById(id)
         if(!user) {
@@ -29,7 +29,7 @@ async function getUser(req, res, id) {
     }
 }
 
-async function createUser(req, res) {
+const createUser = async function(req:IncomingMessage, res:ServerResponse) {
     try {
         const body = await getUserData(req)
 
@@ -61,7 +61,7 @@ async function createUser(req, res) {
     }
 }
 
-async function updateUser(req, res, id) {
+const updateUser = async function(req:IncomingMessage, res:ServerResponse, id:string) {
     try {
         const user = await User.findById(id)
 
@@ -86,8 +86,8 @@ async function updateUser(req, res, id) {
 
                 const userData = {
                     username: username || user.username,
-                    age: age || user.description,
-                    hobbies: hobbies || user.price
+                    age: age || user.age,
+                    hobbies: hobbies || user.hobbies
                 }
     
                 const updUser = await User.update(id, userData)
@@ -105,7 +105,7 @@ async function updateUser(req, res, id) {
     }
 }
 
-async function deleteUser(req, res, id) {
+const deleteUser = async function(_req:IncomingMessage, res:ServerResponse, id:string) {
     try {
         const user = await User.findById(id)
 
@@ -123,10 +123,4 @@ async function deleteUser(req, res, id) {
     }
 }
 
-module.exports = {
-    getUsers,
-    getUser,
-    createUser,
-    updateUser,
-    deleteUser
-}
+export { getUsers, getUser, createUser, updateUser, deleteUser };
