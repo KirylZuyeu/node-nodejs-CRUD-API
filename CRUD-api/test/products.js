@@ -10,16 +10,20 @@ chai.use(chaiHttp);
 // Our main block
 describe('Users', () => {
   // Consts
-  const id = '3',
-    successCode = 200,
-    user = {
+  const successCode = 200;
+  const deleteCode = 204;
+  const user = {
       username: 'Kiryl',
       age: 22,
       hobbies: ['frontEnd', 'backEnd'],
-    },
-    testName = 'Cannon EOS 80D DSLR Camera',
-    testPrice = { title: 'hello', price: '778' };
+  };
+  const testUser = {
+    username: 'Roman',
+    age: 23,
+    hobbies: ['java', 'js'],
+};
 
+  const testPrice = { title: 'hello', price: '778' };
   /*
   * Test for /GET
   */
@@ -56,52 +60,71 @@ describe('Users', () => {
   /*
   * Test for /GET:id
   */
-  describe('/GET/:id user', () => {
-    it('it should GET a book by the given id', done => {
+  describe('/GET/:id user', async () => {
+    it('it should GET a user by the given id', done => {
       chai.request(server)
-        .get(`/api/users/${id}`)
+        .post('/api/users')
+        .send(user)
         .end((err, res) => {
-          res.should.have.status(successCode);
-          res.body.should.be.a('object');
-          res.body.should.have.property('id').eql(id);
-          res.body.should.have.property('description');
-          res.body.should.have.property('price');
-          res.body.should.have.property('name').eql(testName);
-          done();
+          let testId = res.body.id;
+          const testUsername = user.username;
+          const testAge = user.age;
+          const testHobbies = user.hobbies;
+          chai.request(server).get(`/api/users/${testId}`)
+            .end((err, res) => {
+              res.should.have.status(successCode);
+              res.body.should.be.a('object');
+              res.body.should.have.property('id').eql(testId);
+              res.body.should.have.property('username').eql(testUsername);
+              res.body.should.have.property('age').eql(testAge);
+              res.body.should.have.property('hobbies').eql(testHobbies);
+            done();
+          });
         });
     });
   });
   /*
   * Test for /PUT:id
   */
-  describe('/PUT/:id product', () => {
-    it('it should UPDATE a product given the id', done => {
+  describe('/PUT/:id user', () => {
+    it('it should UPDATE a user given the id', done => {
       chai.request(server)
-        .put(`/api/products/${id}`)
-        .send(testPrice)
+        .post('/api/users')
+        .send(user)
         .end((err, res) => {
-          res.should.have.status(successCode);
-          res.body.should.be.a('object');
-          res.body.should.have.property('id').eql(id);
-          res.body.should.have.property('name').eql(testName);
-          res.body.should.have.property('description');
-          res.body.should.have.property('price').eql(testPrice.price);
-          done();
+          let testId = res.body.id;
+          chai.request(server)
+              .put(`/api/users/${testId}`)
+              .send(testUser)
+              .end((err, res) => {
+                res.should.have.status(successCode);
+                res.body.should.be.a('object');
+                res.body.should.have.property('id').eql(testId);
+                res.body.should.have.property('username').eql(testUser.username);
+                res.body.should.have.property('age').eql(testUser.age);;
+                res.body.should.have.property('hobbies').eql(testUser.hobbies);
+                done();
+              });
         });
     });
   });
   /*
   * Test for /DELETE:id
   */
-  describe('/DELETE/:id product', () => {
-    it('it should DELETE a product given the id', done => {
+  describe('/DELETE/:id user', () => {
+    it('it should DELETE a user given the id', done => {
       chai.request(server)
-        .delete(`/api/products/${id}`)
+        .post('/api/users')
+        .send(user)
         .end((err, res) => {
-          res.should.have.status(successCode);
-          res.body.should.be.a('object');
-          res.body.should.have.property('message').eql(`Product ${id} removed`);
-          done();
+          let testId = res.body.id;
+          console.log(testId)
+          chai.request(server)
+              .delete(`/api/users/${testId}`)
+              .end((err, res) => {
+                res.should.have.status(deleteCode);
+                done();
+              });
         });
     });
   });

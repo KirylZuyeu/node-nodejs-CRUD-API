@@ -35,23 +35,23 @@ var __importDefault = (this && this.__importDefault) || function (mod) {
     return (mod && mod.__esModule) ? mod : { "default": mod };
 };
 Object.defineProperty(exports, "__esModule", { value: true });
-const node_cluster_1 = __importDefault(require("node:cluster"));
-const node_os_1 = require("node:os");
-const node_process_1 = __importDefault(require("node:process"));
-const numCPUs = (0, node_os_1.cpus)().length;
+const cluster_1 = __importDefault(require("cluster"));
+const os_1 = require("os");
+const process_1 = __importDefault(require("process"));
+const numCPUs = (0, os_1.cpus)().length;
 const muiltyCluster = () => __awaiter(void 0, void 0, void 0, function* () {
-    if (node_cluster_1.default.isPrimary) {
-        console.log(`Master ${node_process_1.default.pid} is running`);
+    if (cluster_1.default.isPrimary) {
+        console.log(`Master ${process_1.default.pid} is running`);
         for (let i = 0; i < numCPUs; i++) {
-            node_cluster_1.default.fork();
+            cluster_1.default.fork();
         }
-        node_cluster_1.default.on('exit', (worker) => {
+        cluster_1.default.on('exit', (worker) => {
             console.log(`Worker ${worker.process.pid} died`);
         });
     }
     else {
         (yield Promise.resolve().then(() => __importStar(require('./index')))).default;
-        console.log(`Worker ${node_process_1.default.pid} was started.`);
+        console.log(`Worker ${process_1.default.pid} was started.`);
     }
 });
 muiltyCluster();
