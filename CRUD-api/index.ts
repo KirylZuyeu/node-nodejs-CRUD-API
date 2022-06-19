@@ -8,7 +8,6 @@ const PORT = process.env.PORT || 5000;
 
 const server = http.createServer((req, res) => {
     let urlReq = req.url!;
-    console.log(urlReq)
     if (urlReq === '/') {
         res.writeHead(500, { 'Content-Type': 'application/json' })
         res.end(JSON.stringify({ message: 'Internal server error 500' }))
@@ -47,5 +46,7 @@ const server = http.createServer((req, res) => {
 })
 
 server.listen(PORT, () => console.log(`Server running on port ${PORT}`))
+
+export default server;
 
 

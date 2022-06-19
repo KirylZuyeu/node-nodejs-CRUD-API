@@ -11,7 +11,6 @@ dotenv_1.default.config();
 const PORT = process.env.PORT || 5000;
 const server = http_1.default.createServer((req, res) => {
     let urlReq = req.url;
-    console.log(urlReq);
     if (urlReq === '/') {
         res.writeHead(500, { 'Content-Type': 'application/json' });
         res.end(JSON.stringify({ message: 'Internal server error 500' }));
@@ -58,3 +57,4 @@ const server = http_1.default.createServer((req, res) => {
     }
 });
 server.listen(PORT, () => console.log(`Server running on port ${PORT}`));
+exports.default = server;
