@@ -47,7 +47,7 @@ const createUser = async function(req:IncomingMessage, res:ServerResponse) {
             res.end(JSON.stringify({ message: 'Incorrect type of mandatory value username field - it must be a string' }))
         } else if (!age || typeof age !== "number") {
             res.writeHead(400, { 'Content-Type': 'application/json' })
-            res.end(JSON.stringify({ message: 'Incorrect type of mandatory value age field - it must be a number' }))
+            res.end(JSON.stringify({ message: 'Incorrect type of mandatory value age field - it must be a number'}))
         } else if (!hobbies || !Array.isArray(hobbies) || !hobbies.every((i:string) => (typeof i === "string"))) {
             res.writeHead(400, { 'Content-Type': 'application/json' })
             res.end(JSON.stringify({ message: 'Incorrect type of mandatory value hobbies field - it must be array of strings'}))

@@ -7,7 +7,7 @@ const should = chai.should();
 
 chai.use(chaiHttp);
 // Our main block
-describe('Users', () => {
+describe('Scenario 1', () => {
   // Consts
   const successCode = 200;
   const deleteCode = 204;
