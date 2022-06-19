@@ -34,12 +34,13 @@ const createUser = async function(req:IncomingMessage, res:ServerResponse) {
     try {
         const body = await getUserData(req)
 
-        const { username, age, hobbies } = JSON.parse(body)
+        const { username, age, hobbies, ...args } = JSON.parse(body)
 
         const user = {
             username,
             age,
-            hobbies
+            hobbies,
+            ...args
         }
 
         if (!username || typeof username !== "string") {
@@ -72,7 +73,7 @@ const updateUser = async function(req:IncomingMessage, res:ServerResponse, id:st
         } else {
             const body = await getUserData(req)
 
-            const { username, age, hobbies } = JSON.parse(body)
+            const { username, age, hobbies, ...args } = JSON.parse(body)
 
             if (!username || typeof username !== "string") {
                 res.writeHead(400, { 'Content-Type': 'application/json' })
@@ -88,7 +89,8 @@ const updateUser = async function(req:IncomingMessage, res:ServerResponse, id:st
                 const userData = {
                     username: username || user.username,
                     age: age || user.age,
-                    hobbies: hobbies || user.hobbies
+                    hobbies: hobbies || user.hobbies,
+                    ...args
                 }
     
                 const updUser = await User.update(id, userData)
