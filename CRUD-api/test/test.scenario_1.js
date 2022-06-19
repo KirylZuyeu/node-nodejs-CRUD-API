@@ -131,7 +131,7 @@ describe('Scenario 1', () => {
   * Test for GET api/users/{userId}
   */
   describe('/GET/:non-existent id user ', async () => {
-    it('it should GET a user by the given non-existent id', done => {
+    it('it shouldn\'t GET a user by the given non-existent id with message User Not Found', done => {
       chai.request(server)
         .post('/api/users')
         .send(user)
